@@ -41,7 +41,7 @@ class SD3_Zho:
             "required": {
                 "positive": ("STRING", {"default": "cat", "multiline": True}),
                 "negative": ("STRING", {"default": "worst quality, low quality", "multiline": True}),
-                "aspect_ratio": (["1:1", "21:9", "16:9", "5:4", "3:2", "1:1", "2:3", "4:5", "9:16", "9:21"],),
+                "aspect_ratio": (["21:9", "16:9", "5:4", "3:2", "1:1", "2:3", "4:5", "9:16", "9:21"],),
                 "mode": (["text-to-image", "image-to-image"],),
                 "model": (["sd3", "sd3-turbo"],),
                 "seed": ("INT", {"default": 66, "min": 0, "max": 1000000}),
