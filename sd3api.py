@@ -48,7 +48,7 @@ class SD3_Zho:
             },
             "optional": {
                 "image": ("IMAGE",),  
-                "strength": ("FLOAT", {"default": 1, "min": 0, "max": 1}),
+                "strength": ("FLOAT", {"default": 0.7, "min": 0, "max": 1.0, "step": 0.01}}),
             }
         }
 
@@ -60,53 +60,100 @@ class SD3_Zho:
         
         apikey = get_sai_api_key()
 
-        if mode == 'text-to-image':
-            response = requests.post(
-                f"https://api.stability.ai/v2beta/stable-image/generate/sd3",
-                headers={
-                    "authorization": apikey,
-                    "accept": "application/json"
-                },
-                files={"none": ''},
-                data={
-                    "prompt": positive,
-                    "negative_prompt": negative,
-                    "aspect_ratio": aspect_ratio,
-                    "mode": mode,
-                    "model": model,
-                    "seed": seed,
-                    "output_format": "png",
-                },
-            )
+        if model == 'sd3-turbo':
+            if mode == 'text-to-image':
+                response = requests.post(
+                    f"https://api.stability.ai/v2beta/stable-image/generate/sd3",
+                    headers={
+                        "authorization": apikey,
+                        "accept": "application/json"
+                    },
+                    files={"none": ''},
+                    data={
+                        "prompt": positive,
+                        "aspect_ratio": aspect_ratio,
+                        "mode": mode,
+                        "model": model,
+                        "seed": seed,
+                        "output_format": "png",
+                    },
+                )
 
-        elif mode == 'image-to-image':
-            pil_image = tensor2pil(image)
+            elif mode == 'image-to-image':
+                pil_image = tensor2pil(image)
             
-            img_byte_arr = BytesIO()
-            pil_image.save(img_byte_arr, format='PNG')
-            #img_byte_arr = img_byte_arr.getvalue()
-            img_byte_arr.seek(0)
+                img_byte_arr = BytesIO()
+                pil_image.save(img_byte_arr, format='PNG')
+                #img_byte_arr = img_byte_arr.getvalue()
+                img_byte_arr.seek(0)
             
-            response = requests.post(
-                f"https://api.stability.ai/v2beta/stable-image/generate/sd3",
-                headers={
-                    "authorization": apikey,
-                    "accept": "application/json"
-                },
-                files={
-                    "image": ("image.png", img_byte_arr, 'image/png'), 
-                },
-                data={
-                    "prompt": positive,
-                    "negative_prompt": negative,
-                    "aspect_ratio": aspect_ratio,
-                    "mode": mode,
-                    "model": model,
-                    "seed": seed,
-                    "strength": strength,
-                    "output_format": "png",
-                },
-            )
+                response = requests.post(
+                    f"https://api.stability.ai/v2beta/stable-image/generate/sd3",
+                    headers={
+                        "authorization": apikey,
+                        "accept": "application/json"
+                    },
+                    files={
+                        "image": ("image.png", img_byte_arr, 'image/png'), 
+                    },
+                    data={
+                        "prompt": positive,
+                        "mode": mode,
+                        "model": model,
+                        "seed": seed,
+                        "strength": strength,
+                        "output_format": "png",
+                    },
+                )
+
+
+        elif model == 'sd3':
+            if mode == 'text-to-image':
+                response = requests.post(
+                    f"https://api.stability.ai/v2beta/stable-image/generate/sd3",
+                    headers={
+                        "authorization": apikey,
+                        "accept": "application/json"
+                    },
+                    files={"none": ''},
+                    data={
+                        "prompt": positive,
+                        "negative_prompt": negative,
+                        "aspect_ratio": aspect_ratio,
+                        "mode": mode,
+                        "model": model,
+                        "seed": seed,
+                        "output_format": "png",
+                    },
+                )
+
+            elif mode == 'image-to-image':
+                pil_image = tensor2pil(image)
+            
+                img_byte_arr = BytesIO()
+                pil_image.save(img_byte_arr, format='PNG')
+                #img_byte_arr = img_byte_arr.getvalue()
+                img_byte_arr.seek(0)
+            
+                response = requests.post(
+                    f"https://api.stability.ai/v2beta/stable-image/generate/sd3",
+                    headers={
+                        "authorization": apikey,
+                        "accept": "application/json"
+                    },
+                    files={
+                        "image": ("image.png", img_byte_arr, 'image/png'), 
+                    },
+                    data={
+                        "prompt": positive,
+                        "negative_prompt": negative,
+                        "mode": mode,
+                        "model": model,
+                        "seed": seed,
+                        "strength": strength,
+                        "output_format": "png",
+                    },
+                )
         
         if response.status_code == 200:
             json_data = response.json()
