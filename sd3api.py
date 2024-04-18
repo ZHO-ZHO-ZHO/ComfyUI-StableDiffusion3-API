@@ -48,7 +48,7 @@ class SD3_Zho:
             },
             "optional": {
                 "image": ("IMAGE",),  
-                "strength": ("FLOAT", {"default": 0.7, "min": 0, "max": 1.0, "step": 0.01}}),
+                "strength": ("FLOAT", {"default": 0.7, "min": 0, "max": 1.0, "step": 0.01}),
             }
         }
 
