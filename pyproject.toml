@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-stablediffusion3-api"
-description = ""
+description = "通过 API 将 Stable Diffusion 3 引入 ComfyUI"
 version = "1.0.0"
 license = "LICENSE"
 
